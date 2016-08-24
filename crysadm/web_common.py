@@ -418,11 +418,8 @@ def add_function():
 
     def int2ip(int_ip):
         return socket.inet_ntoa(struct.pack("I", int_ip))
-    
-    def convert_to_yuanjiaofen(crystal_values):
-        return int(crystal_values / 100) / 100
 
-    return dict(convert_to_yuan=convert_to_yuan, get_device_type=get_device_type, int2ip=int2ip,convert_to_yuanjiaofen=convert_to_yuanjiaofen)
+    return dict(convert_to_yuan=convert_to_yuan, get_device_type=get_device_type, int2ip=int2ip)
 
 # 显示消息框
 @app.context_processor
@@ -502,61 +499,3 @@ def accounts_count():
     accounts_count = dict(users=users, accounts=accounts, accountsk=accountsk)
     r_session.setex(count_key, json.dumps(accounts_count), 120)
     return dict(accounts_count=accounts_count)
-
-@app.route('/money')
-@requires_auth
-def moneyAnalyzer():
-    user = session.get('user_info')
-    username = user.get('username')
-
-    user_key = '%s:%s' % ('user', username)
-    user_info = json.loads(r_session.get(user_key).decode('utf-8'))
-
-    data_money = dict(balance=0,sevenDaysAverage=0,total_income_money=0,daily_profit=0,daily_outcome_total=0,outcome_total=0,estimated_recover_days=0)
-    value = 0
-    counter=0
-    today = datetime.today()
-    for b_data in r_session.mget(
-            *['user_data:%s:%s' % (username, (today + timedelta(days=i)).strftime('%Y-%m-%d')) for i in range(-7, 0)]):
-        if b_data is None:
-            continue
-        counter+=1
-        data_money = json.loads(b_data.decode('utf-8'))
-        value+=data_money.get('pdc')
-    if counter!=0:
-        data_money['sevenDaysAverage']=value/counter
-
-    str_today = datetime.now().strftime('%Y-%m-%d')
-    key = 'user_data:%s:%s' % (username, str_today)
-    b_data = r_session.get(key)
-    if b_data is not None:
-        data_money['balance'] = json.loads(b_data.decode('utf-8')).get('balance')
-
-    try:
-        data_money['total_income_money'] = user_info['withdrawn_money_modify']*10000+data_money['balance']
-    except KeyError:
-        data_money['total_income_money'] = 0
-    try:
-        data_money['daily_profit'] = data_money['sevenDaysAverage']-user_info['daily_outcome']*10000
-    except KeyError:
-        data_money['daily_profit'] = 0
-    try:
-        startDay=datetime.strptime(user_info['daily_outcome_start_date'],'%Y-%m-%d')
-        days_delta = (datetime.now()-startDay).days
-    except KeyError:
-        days_delta=0
-    try:
-        data_money['daily_outcome_total'] = user_info['daily_outcome']*days_delta*10000
-    except KeyError:
-        data_money['daily_outcome_total'] = 0
-    try:
-        data_money['outcome_total'] = data_money['daily_outcome_total'] + (user_info['hardware_outcome'] + user_info['other_outcome'])*10000
-    except KeyError:
-        data_money['outcome_total'] = 0
-    data_money['total_profit'] = (data_money['total_income_money'] - data_money['outcome_total'])
-    if data_money['daily_profit']!=0:
-        data_money['estimated_recover_days'] = int(data_money['total_profit']/data_money['daily_profit'])*(-1)
-
-    return render_template('money.html', data_money=data_money,user_info=user_info)
-
-

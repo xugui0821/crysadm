@@ -5,15 +5,16 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="HandheldFriendly" content="true" />
     <title>Crysadm+</title>
 
-    <link rel="icon" href="https://o9si0pmld.qnssl.com/logo_full.png" type="image/png">
+    <link rel="icon" href="https://o9si0pmld.qnssl.com/img/logo_full.svg" type="image/png">
 
     <link href="https://o9si0pmld.qnssl.com/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://o9si0pmld.qnssl.com/font-awesome/css/font-awesome.css" rel="stylesheet">
     {% block css_block %}{% endblock %}
     <link href="https://o9si0pmld.qnssl.com/css/animate.css" rel="stylesheet">
-    <link href="https://o9si0pmld.qnssl.com/style.css" rel="stylesheet">
+    <link href="https://o9si0pmld.qnssl.com/css/style.css" rel="stylesheet">
 
 
     <style>
@@ -50,12 +51,10 @@
 {% set navigation_bar = [
     ('dashboard','/dashboard', '<i class="fa fa-fw fa-dashboard"></i>', '监控中心','',[]),
     ('analyzer','/analyzer', '<i class="fa fa-fw fa-bar-chart-o"></i>', '数据分析','',[]),
-    ('money','/money', '<i class="fa fa-fw fa-money"></i>', '收支分析','',[]),
     ('excavators','/excavators', '<i class="fa fa-fw fa-sitemap"></i>', '我的矿机','',[]),
     ('log','/log?time=7days&type=0', '<i class="fa fa-fw fa-calendar"></i>', '运行日记','',[]),
     ('accounts','/accounts', '<i class="fa fa-fw fa-user"></i>', '迅雷账号管理','',[]),
     ('profile','/user/profile', '<i class="fa fa-fw fa-wrench"></i>', '云监工设置','',[]),
-    ('talk','/talk', '<i class="fa fa-fw fa-comments"></i>', '用户交流','',[]),
 
 ] -%}
 {% set navigation_admin_bar = [
@@ -102,7 +101,7 @@
             <ul class="nav" id="side-menu">
 
                 <li class="nav-header" style="padding: 0px;">
-                    <img alt="Logo" src="https://o9si0pmld.qnssl.com/logo_full.png" style="width: 70px;padding: 10px 10px 20px 10px;">
+                    <img alt="Logo" src="https://o9si0pmld.qnssl.com/img/logo_full.svg" style="width: 70px;padding: 10px 10px 20px 10px;">
                     <div style="float: right; margin-top: 14px; margin-right: 10px;">
                         <span class="nav-label" style="font-size: 28px"><b style="color:#FFF">Crysadm+</b></span>
                     </div>
@@ -233,7 +232,6 @@
                 <span style="margin-right:10px;">本站用户数：{{ accounts_count.users }}</span>
                 <span style="margin-right:10px;">迅雷账号数：{{ accounts_count.accounts }}</span>
                 <span>矿机数：{{ accounts_count.accountsk }}</span>
-                <span><a target="_blank" href="http://bbs.rhh520.cn">用户交流论坛</span>
             </div>
             <div class="pull-right">
                 <strong>Copyright</strong> powergx &copy; &azjcode 2016-
@@ -251,7 +249,7 @@
 
 <!-- Mainly scripts -->
 <script src="https://o9si0pmld.qnssl.com/js/jquery-2.1.1.js"></script>
-<script src="../static/js/jquery.form.js"></script>
+<script src="https://o9si0pmld.qnssl.com/js/jquery.form.js"></script>
 <script src="https://o9si0pmld.qnssl.com/js/jquery.cookie.js"></script>
 <script src="https://o9si0pmld.qnssl.com/js/bootstrap.min.js"></script>
 <script src="https://o9si0pmld.qnssl.com/js/plugins/metisMenu/jquery.metisMenu.js"></script>
